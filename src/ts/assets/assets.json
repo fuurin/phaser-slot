@@ -1,0 +1,97 @@
+{
+  "image": [
+    [
+      "background",
+      "./assets/images/background.jpg"
+    ],
+    [
+      "body",
+      "./assets/images/body.png"
+    ],
+    [
+      "bonus",
+      "./assets/images/bonus.png"
+    ],
+    [
+      "button_bet",
+      "./assets/images/button_bet.jpg"
+    ],
+    [
+      "button_start",
+      "./assets/images/button_start.png"
+    ],
+    [
+      "button_stop",
+      "./assets/images/button_stop.jpg"
+    ],
+    [
+      "frame_button_stop",
+      "./assets/images/frame_button_stop.jpg"
+    ],
+    [
+      "frame_cyan",
+      "./assets/images/frame_cyan.png"
+    ],
+    [
+      "frame_yellow",
+      "./assets/images/frame_yellow.png"
+    ],
+    [
+      "i_bar",
+      "./assets/images/i_bar.jpg"
+    ],
+    [
+      "i_bell",
+      "./assets/images/i_bell.jpg"
+    ],
+    [
+      "i_cherry",
+      "./assets/images/i_cherry.jpg"
+    ],
+    [
+      "i_muscat",
+      "./assets/images/i_muscat.jpg"
+    ],
+    [
+      "i_pierrot",
+      "./assets/images/i_pierrot.jpg"
+    ],
+    [
+      "i_rhino",
+      "./assets/images/i_rhino.jpg"
+    ],
+    [
+      "i_seven",
+      "./assets/images/i_seven.jpg"
+    ],
+    [
+      "partition",
+      "./assets/images/partition.jpg"
+    ],
+    [
+      "probs",
+      "./assets/images/probs.png"
+    ],
+    [
+      "text_bet",
+      "./assets/images/text_bet.png"
+    ],
+    [
+      "text_coin",
+      "./assets/images/text_coin.png"
+    ]
+  ],
+  "audio": [],
+  "spritesheet": [
+    [
+      "numbers",
+      "./assets/images/numbers.jpg",
+      {
+        "frameWidth": 184,
+        "frameHeight": 300,
+        "startFrame": 0,
+        "endFrame": 9
+      }
+    ]
+  ]
+}
