@@ -17,15 +17,16 @@ export default {
     window: {
       left: 422,
       top: 335,
-      centerY: 402
+      centerY: 408
     },
     depth: 30
   },
   reel: {
     num: 3,
+    length: 21,
     speed: {
-      move: 10,
-      slip: 5
+      move: 20,
+      slip: 10
     }
   },
   partition: {
@@ -110,8 +111,7 @@ export default {
     imageW: 170,
     imageH: 65,
     scale: 0.76,
-    depth: 1,
-    displayNum: 5
+    depth: 1
   },
   frameButtonStop: {
     imageKey: 'frame_button_stop',

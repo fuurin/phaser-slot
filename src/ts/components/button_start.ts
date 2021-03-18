@@ -1,5 +1,6 @@
 import C from '../consts'
-import { Reel, ReelState } from './reel'
+import Reel from './reel'
+import ReelState from '../enums/reel_state'
 
 export default class ButtonStart extends Phaser.GameObjects.Image {
   public static width = C.buttonStart.imageW * C.buttonStart.scale

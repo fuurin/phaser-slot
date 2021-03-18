@@ -1,24 +1,34 @@
 import C from '../consts'
 import Icon from './icon'
+import AppearingIcons from '../classes/appearing_icons'
+import ReelState from '../enums/reel_state'
 
-export const ReelState = {
-  moving: 'moving',
-  slipping: 'slipping',
-  stop: 'stop'
-} as const
-type ReelState = typeof ReelState[keyof typeof ReelState]
-
-export class Reel extends Phaser.GameObjects.Group {
+export default class Reel extends Phaser.GameObjects.Group {
   public state: ReelState = ReelState.stop
-  private offsetY = 0
+  private bottomIconPosition = 0
+  private gap = 0
+  private onStopCallback: (Reel) => void
 
   constructor(scene: Phaser.Scene, public reelPosition: number) {
     super(scene)
-
-    const firstImageKeyPosition = Math.floor(Math.random() * C.icon.imageKeys[reelPosition].length)
-    for (let i = Icon.destroyPosition; i >= Icon.createPosition; i--) {
-      this.add(new Icon(scene, reelPosition, i, firstImageKeyPosition + i))
+    const iconPositionOffset = Math.floor(Math.random() * C.reel.length)
+    for (let i = 0; i < C.reel.length; i++) {
+      this.add(new Icon(scene, reelPosition, i, (iconPositionOffset + i) % C.reel.length))
     }
+  }
+
+  public onStop(callback: (Reel) => void): void {
+    this.onStopCallback = callback
+  }
+
+  public appearingIcons(): AppearingIcons {
+    const centerPosition = (this.bottomIconPosition + Math.floor(C.reel.length / 2)) % C.reel.length
+    const children = this.getChildren()
+    return new AppearingIcons(
+      children[(centerPosition + 1) % C.reel.length] as Icon,
+      children[centerPosition] as Icon,
+      children[(centerPosition === 0 ? C.reel.length : centerPosition) - 1] as Icon
+    )
   }
 
   public update(): void {
@@ -33,24 +43,35 @@ export class Reel extends Phaser.GameObjects.Group {
         return
     }
     this.turnover()
+    if (this.state === ReelState.slipping && this.gap === 0) this.stop()
   }
 
   private move() {
+    this.gap += C.reel.speed.move
     this.children.iterate((icon: Icon) => icon.move(C.reel.speed.move))
-    this.offsetY += C.reel.speed.move
   }
 
   private slip() {
-    this.children.iterate((icon: Icon) => icon.move(C.reel.speed.slip))
-    this.offsetY += C.reel.speed.slip
-    if (this.offsetY >= Icon.height) this.state = ReelState.stop
+    this.gap += C.reel.speed.slip
+    if (this.gap < Icon.height) {
+      this.children.iterate((icon: Icon) => icon.move(C.reel.speed.slip))
+    } else {
+      const lastSpeed = C.reel.speed.slip - (this.gap - Icon.height)
+      this.children.iterate((icon: Icon) => icon.move(lastSpeed))
+      this.gap = Icon.height
+    }
   }
 
   private turnover() {
-    if (this.offsetY < Icon.height) return
-    this.offsetY -= Icon.height
-    const oldestIcon = this.getChildren()[0] as Icon
-    this.add(new Icon(this.scene, this.reelPosition, Icon.createPosition, oldestIcon.nextImageKeyPosition(), this.offsetY))
-    oldestIcon.destroy()
+    if (this.gap < Icon.height) return
+    this.gap -= Icon.height
+    const bottomIcon = this.getChildren()[this.bottomIconPosition] as Icon
+    bottomIcon.y -= Icon.height * C.reel.length
+    this.bottomIconPosition = (this.bottomIconPosition + 1) % C.reel.length
+  }
+
+  private stop() {
+    this.state = ReelState.stop
+    if (typeof this.onStopCallback !== 'undefined') this.onStopCallback(this)
   }
 }

@@ -1,5 +1,6 @@
 import C from '../consts'
-import { Reel, ReelState } from './reel'
+import Reel from './reel'
+import ReelState from '../enums/reel_state'
 
 export default class ButtonStop extends Phaser.GameObjects.Image {
   public static width = C.buttonStop.imageW * C.buttonStop.scale
@@ -18,15 +19,7 @@ export default class ButtonStop extends Phaser.GameObjects.Image {
   }
 
   private changeReelState() {
-    switch (this.reel.state) {
-      case ReelState.moving:
-        this.reel.state = ReelState.slipping
-        break
-      case ReelState.stop:
-        this.reel.state = ReelState.moving
-        break
-      default:
-        break
-    }
+    if (this.reel.state !== ReelState.moving) return
+    this.reel.state = ReelState.slipping
   }
 }
